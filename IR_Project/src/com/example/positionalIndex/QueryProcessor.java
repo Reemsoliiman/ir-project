@@ -65,10 +65,8 @@ public class QueryProcessor {
     public static Map<String, List<Integer>> getQueryPositionalIndex(Map<String, Map<Integer, List<Integer>>> positionalIndex, List<String> input) {
         Map<String, List<Integer>> queryPositionalIndex = new TreeMap<>();
         String index = input.get(0).trim();
-
         if (index.contains(" ")) {
             String[] terms = index.split(" ");
-
             Map<Integer, List<Integer>> firstTermDocs = positionalIndex.get(terms[0]);
             if (firstTermDocs != null) {
                 List<Integer> validDocs = new ArrayList<>();
@@ -94,24 +92,20 @@ public class QueryProcessor {
                                     }
                                 }
                             }
-
                             if (adjustedPositions.isEmpty()) {
                                 validPhrase = false;
                                 break;
                             }
-
                             currentPositions = adjustedPositions;
                         } else {
                             validPhrase = false;
                             break;
                         }
                     }
-
                     if (validPhrase) {
                         validDocs.add(docID);
                     }
                 }
-
                 if (!validDocs.isEmpty()) {
                     queryPositionalIndex.put(index, validDocs);
                 }
