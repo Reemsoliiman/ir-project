@@ -1,6 +1,7 @@
 package com.example.positionalIndex;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +41,13 @@ public class Main {
         // Normalize TF-IDF
         Map<String, Map<Integer, Number>> normalizedTFIDF = TF_IDF.normalizeTFIDF(TFIDF, docLengths);
         printTable("Normalized TF-IDF", normalizedTFIDF);
+
+//        List<String> input = new ArrayList<>();
+//        input.add("to tread");
+//        Map<String, List<Integer>> queryPositionalIndex = QueryProcessor.getQueryPositionalIndex(outPut , input);
+//        System.out.println("queryPositionalIndex =>" + queryPositionalIndex);
     }
+
 
     // Enhanced table printer
     private static <K, V> void printTable(String title, Map<K, V> data) {

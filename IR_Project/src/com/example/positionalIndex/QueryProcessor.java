@@ -2,6 +2,9 @@ package com.example.positionalIndex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 
 public class QueryProcessor {
     public static List<String> queryParser(String query) {
@@ -59,4 +62,69 @@ public class QueryProcessor {
 
         return result;
     }
+    public static Map<String, List<Integer>> getQueryPositionalIndex(Map<String, Map<Integer, List<Integer>>> positionalIndex, List<String> input) {
+        Map<String, List<Integer>> queryPositionalIndex = new TreeMap<>();
+        String index = input.get(0).trim();
+
+        if (index.contains(" ")) {
+            String[] terms = index.split(" ");
+
+            Map<Integer, List<Integer>> firstTermDocs = positionalIndex.get(terms[0]);
+            if (firstTermDocs != null) {
+                List<Integer> validDocs = new ArrayList<>();
+
+                for (Map.Entry<Integer, List<Integer>> firstTermDoc : firstTermDocs.entrySet()) {
+                    int docID = firstTermDoc.getKey();
+                    List<Integer> firstTermPositions = firstTermDoc.getValue();
+
+                    boolean validPhrase = true;
+                    List<Integer> currentPositions = new ArrayList<>(firstTermPositions);
+
+                    for (int i = 1; i < terms.length; i++) {
+                        Map<Integer, List<Integer>> termDocs = positionalIndex.get(terms[i]);
+
+                        if (termDocs != null && termDocs.containsKey(docID)) {
+                            List<Integer> termPositions = termDocs.get(docID);
+
+                            List<Integer> adjustedPositions = new ArrayList<>();
+                            for (Integer position : currentPositions) {
+                                for (Integer termPosition : termPositions) {
+                                    if (termPosition == position + 1) {
+                                        adjustedPositions.add(termPosition);
+                                    }
+                                }
+                            }
+
+                            if (adjustedPositions.isEmpty()) {
+                                validPhrase = false;
+                                break;
+                            }
+
+                            currentPositions = adjustedPositions;
+                        } else {
+                            validPhrase = false;
+                            break;
+                        }
+                    }
+
+                    if (validPhrase) {
+                        validDocs.add(docID);
+                    }
+                }
+
+                if (!validDocs.isEmpty()) {
+                    queryPositionalIndex.put(index, validDocs);
+                }
+            }
+        } else {
+            Map<Integer, List<Integer>> termDocs = positionalIndex.get(index);
+            if (termDocs != null) {
+                queryPositionalIndex.put(index, new ArrayList<>(termDocs.keySet()));
+            }
+        }
+
+        return queryPositionalIndex;
+    }
+
+
 }
