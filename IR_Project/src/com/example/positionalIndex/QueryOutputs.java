@@ -89,5 +89,18 @@ public class QueryOutputs {
         double length = Math.sqrt(sum);
         return Math.round(length * 100000.0) / 100000.0;
     }
+    public static Map<String, Number> computeNormalizedQueryTF_IDF(Map<String, Number> queryTF_IDF) {
+        Map<String, Number> normalizedQueryTF_IDF = new TreeMap<>();
+        double queryLength = computeQueryLength(queryTF_IDF);
+
+        for (String term : queryTF_IDF.keySet()) {
+            double tf_idf = queryTF_IDF.get(term).doubleValue();
+            double normalizedValue = queryLength > 0 ? tf_idf / queryLength : 0;
+            normalizedValue = Math.round(normalizedValue * 100000.0) / 100000.0;
+            normalizedQueryTF_IDF.put(term, normalizedValue);
+        }
+
+        return normalizedQueryTF_IDF;
+    }
 
 }
