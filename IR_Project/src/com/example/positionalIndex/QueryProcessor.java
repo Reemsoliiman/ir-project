@@ -1,8 +1,10 @@
 package com.example.positionalIndex;
 
+import java.io.IOException;
 import java.util.*;
 
 public class QueryProcessor {
+
     public static List<String> queryParser(String query) {
         query = query.trim();
         List<String> result = new ArrayList<>();
@@ -116,7 +118,11 @@ public class QueryProcessor {
 
         return queryPositionalIndex;
     }
-    public static List<Integer> logicalOperatorResult(Map<String, List<Integer>> queryPositionalIndex, List<String> query) {
+    public static List<Integer> logicalOperatorResult(Map<String, List<Integer>> queryPositionalIndex, List<String> query) throws IOException{
+
+        String filePath = "mapReduceOutput.txt";
+        Map<String, Map<Integer, List<Integer>>> allDocs = positionalIndexParser.parseFile(filePath);
+
         Set<Integer> resultSet = new HashSet<>();
 
         List<Integer> query1Docs = queryPositionalIndex.get(query.get(0));
@@ -129,15 +135,11 @@ public class QueryProcessor {
                     resultSet.removeAll(query2Docs);
                 }
             }
-//        } else if (query.contains("OR NOT")) {
-//            if (query1Docs != null) {
-//                resultSet.addAll(query1Docs);
-//            }
-//            if (query2Docs != null) {
-//                Set<Integer> allDocs = getAllDocumentIDs(queryPositionalIndex);
-//                allDocs.removeAll(query2Docs);
-//                resultSet.addAll(allDocs);
-//            }
+        } else if (query.contains("OR NOT")) {
+            if (allDocs != null && query2Docs != null) {
+                List<Integer> result = handleORNOT(allDocs, query2Docs);
+                resultSet.addAll(result);
+            }
         } else if (query.contains("AND")) {
             if (query1Docs != null && query2Docs != null) {
                 for (int doc : query2Docs) {
@@ -158,18 +160,13 @@ public class QueryProcessor {
         return new ArrayList<>(resultSet);
     }
 
-    public static List<Integer> handleORNOT(Map<String, Map<Integer, List<Integer>>> positionalIndexParser, Map<String, List<Integer>> queryPositionalIndex) {
+    public static List<Integer> handleORNOT(Map<String, Map<Integer, List<Integer>>> positionalIndexParser, List<Integer> queryPositionalIndex) {
         Set<Integer> allDocs = new HashSet<>();
         for (Map<Integer, List<Integer>> docs : positionalIndexParser.values()) {
             allDocs.addAll(docs.keySet());
         }
 
-        Set<Integer> queryDocs = new HashSet<>();
-        for (List<Integer> docList : queryPositionalIndex.values()) {
-            queryDocs.addAll(docList);
-        }
-
-        allDocs.removeAll(queryDocs);
+        allDocs.removeAll(queryPositionalIndex);
         return new ArrayList<>(allDocs);
     }
 }
