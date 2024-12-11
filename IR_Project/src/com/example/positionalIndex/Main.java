@@ -140,6 +140,9 @@ public class Main {
                     Map<String, Map<Integer, Number>> productQueryMatchedDocs =QueryOutputs.productQueryMatchedDocs(normalizedDocTF_IDF , normalizedQueryTF_IDF);
                     printTable("product (Query * MatchedDocs) " , productQueryMatchedDocs);
 
+                    Map<Integer, Double> sumProduct = QueryOutputs.computeSimilarity(productQueryMatchedDocs);
+                    printTable("sum", sumProduct);
+
                     Map<Integer, Double> similarityScores = QueryOutputs.computeSimilarity(productQueryMatchedDocs);
                     printTable("Similarity Scores", similarityScores);
 

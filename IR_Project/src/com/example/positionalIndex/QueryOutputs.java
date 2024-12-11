@@ -51,6 +51,7 @@ public class QueryOutputs {
         }
         return queryWeightTF;
     }
+
     public static Map<String, Number> retrieveQueryIDF(List<String> query, Map<String, Number> idfMap) {
         Map<String, Number> queryIDF = new TreeMap<>();
         List<String> resultQuery = removeKeyWords(query);
@@ -82,6 +83,7 @@ public class QueryOutputs {
         }
         return queryTF_IDF;
     }
+
     public static double computeQueryLength(Map<String, Number> queryTF_IDF) {
         double sum = 0.0;
         for (Map.Entry<String, Number> entry : queryTF_IDF.entrySet()) {
@@ -91,6 +93,7 @@ public class QueryOutputs {
         double length = Math.sqrt(sum);
         return Math.round(length * 100000.0) / 100000.0;
     }
+
     public static Map<String, Number> computeNormalizedQueryTF_IDF(Map<String, Number> queryTF_IDF) {
         Map<String, Number> normalizedQueryTF_IDF = new TreeMap<>();
         double queryLength = computeQueryLength(queryTF_IDF);
@@ -149,6 +152,7 @@ public class QueryOutputs {
 
         return product;
     }
+
     public static Map<Integer, Double> computeSimilarity(Map<String, Map<Integer, Number>> productQueryMatchedDocs) {
         Map<Integer, Double> similarityScores = new TreeMap<>();
 
@@ -164,6 +168,7 @@ public class QueryOutputs {
 
         return similarityScores;
     }
+
     public static List<Map.Entry<Integer, Double>> rankDocuments(Map<Integer, Double> similarityScores) {
         List<Map.Entry<Integer, Double>> rankedDocuments = new ArrayList<>(similarityScores.entrySet());
         rankedDocuments.sort((entry1, entry2) -> Double.compare(entry2.getValue(), entry1.getValue()));
