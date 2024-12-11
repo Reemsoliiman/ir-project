@@ -2,60 +2,37 @@ package com.example.positionalIndex;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class QueryProcessor {
 
     public static List<String> queryParser(String query) {
         query = query.trim();
         List<String> result = new ArrayList<>();
-        String[] logicalOperators = {"AND NOT", "OR NOT", "AND", "OR"};
 
-        String[] words = query.split("\\s+");
-        StringBuilder currentSegment = new StringBuilder();
+        String operatorPattern = "\\b(AND NOT|OR NOT|AND|OR)\\b";
+        Pattern pattern = Pattern.compile(operatorPattern, Pattern.CASE_INSENSITIVE);
 
-        for (int i = 0; i < words.length; i++) {
-            boolean isLogicalOperator = false;
+        Matcher matcher = pattern.matcher(query);
+        int lastEnd = 0;
 
-            if (i + 1 < words.length) {
-                String twoWordOperator = words[i] + " " + words[i + 1];
-                for (String operator : logicalOperators) {
-                    if (operator.equalsIgnoreCase(twoWordOperator)) {
-                        isLogicalOperator = true;
-                        if (!currentSegment.isEmpty()) {
-                            result.add(currentSegment.toString().trim());
-                            currentSegment.setLength(0);
-                        }
-                        result.add(twoWordOperator.toUpperCase());
-                        i++;
-                        break;
-                    }
+        while (matcher.find()) {
+            if (matcher.start() > lastEnd) {
+                String segment = query.substring(lastEnd, matcher.start()).trim();
+                if (!segment.isEmpty()) {
+                    result.add(segment);
                 }
             }
-
-            if (!isLogicalOperator) {
-                for (String operator : logicalOperators) {
-                    if (words[i].equalsIgnoreCase(operator)) {
-                        isLogicalOperator = true;
-                        if (!currentSegment.isEmpty()) {
-                            result.add(currentSegment.toString().trim());
-                            currentSegment.setLength(0);
-                        }
-                        result.add(words[i].toUpperCase());
-                        break;
-                    }
-                }
-            }
-
-            if (!isLogicalOperator) {
-                if (!currentSegment.isEmpty()) {
-                    currentSegment.append(" ");
-                }
-                currentSegment.append(words[i]);
-            }
+            result.add(matcher.group().toUpperCase());
+            lastEnd = matcher.end();
         }
 
-        if (!currentSegment.isEmpty()) {
-            result.add(currentSegment.toString().trim());
+        if (lastEnd < query.length()) {
+            String segment = query.substring(lastEnd).trim();
+            if (!segment.isEmpty()) {
+                result.add(segment);
+            }
         }
 
         return result;
