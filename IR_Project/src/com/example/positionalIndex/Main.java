@@ -63,39 +63,22 @@ public class Main {
                     String query1 = input.nextLine();
                     query.append(query1).append(" ");
 
-                    while (true){
+                    while (true) {
                         System.out.print("Do you want to add operator and query? (y/n): ");
                         String continueChoice = input.nextLine();
+
                         if (continueChoice.equalsIgnoreCase("n")) {
                             break;
                         } else if (continueChoice.equalsIgnoreCase("y")) {
                             System.out.print("Enter operator: ");
                             String op = input.nextLine();
-                            query.append(op).append(" ");
+                            query.append(" ").append(op);
 
                             System.out.print("Enter query: ");
                             String query2 = input.nextLine();
-                            query.append(query2);
-                        }else {
+                            query.append(" ").append(query2);
+                        } else {
                             System.out.println("Invalid choice. Please type 'y' or 'n'.");
-                        }
-                        while (true) {
-                            System.out.print("Do you want to add another operator and query? (y/n): ");
-                            continueChoice = input.nextLine();
-
-                            if (continueChoice.equalsIgnoreCase("n")) {
-                                break;
-                            } else if (continueChoice.equalsIgnoreCase("y")) {
-                                System.out.print("Enter operator: ");
-                                String nextOp = input.nextLine();
-                                query.append(" ").append(nextOp);
-
-                                System.out.print("Enter query: ");
-                                String nextQuery = input.nextLine();
-                                query.append(" ").append(nextQuery);
-                            } else {
-                                System.out.println("Invalid choice. Please type 'y' or 'n'.");
-                            }
                         }
                     }
 
@@ -114,7 +97,7 @@ public class Main {
                             queryResult.addAll(list);
                         }
                     }
-                    System.out.println("Query Result => " + queryResult);
+                    System.out.println("Query Result (Doc ids) => " + queryResult);
 
                     Map<String, Integer> queryTF = QueryOutputs.computeQueryTF(parsedQuery);
                     printTable("Query TF" , queryTF);
@@ -140,11 +123,8 @@ public class Main {
                     Map<String, Map<Integer, Number>> productQueryMatchedDocs =QueryOutputs.productQueryMatchedDocs(normalizedDocTF_IDF , normalizedQueryTF_IDF);
                     printTable("product (Query * MatchedDocs) " , productQueryMatchedDocs);
 
-                    Map<Integer, Double> sumProduct = QueryOutputs.computeSimilarity(productQueryMatchedDocs);
-                    printTable("sum", sumProduct);
-
                     Map<Integer, Double> similarityScores = QueryOutputs.computeSimilarity(productQueryMatchedDocs);
-                    printTable("Similarity Scores", similarityScores);
+                    printTable("Similarity Scores (sum)", similarityScores);
 
                     List<Map.Entry<Integer, Double>> rankedDocuments = QueryOutputs.rankDocuments(similarityScores);
                     System.out.println("\n" + "═".repeat(50));
