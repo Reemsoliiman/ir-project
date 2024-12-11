@@ -44,7 +44,9 @@ public class QueryOutputs {
                 queryIDF.put(term, 0);
             }
         }
-
         return queryIDF;
     }
+
+
+
 }
