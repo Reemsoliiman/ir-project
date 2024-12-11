@@ -54,6 +54,9 @@ public class Main {
         Map<String, Integer> queryTF = QueryOutputs.computeQueryTF(resultQuery);
         System.out.println("QueryTF: " + queryTF);
 
+        Map<String, Number> queryWeightTF = QueryOutputs.computeQueryWeightTF(queryTF);
+        System.out.println("QueryTF: " + queryWeightTF);
+
         Map<String, Number> queryIDF = QueryOutputs.retrieveQueryIDF(resultQuery, IDF);
         System.out.println("Query IDF: " + queryIDF);
 

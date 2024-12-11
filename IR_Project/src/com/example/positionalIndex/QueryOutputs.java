@@ -34,6 +34,23 @@ public class QueryOutputs {
          }
          return queryTF;
     }
+
+    public static Map<String, Number> computeQueryWeightTF (Map<String, Integer> queryTF){
+        Map<String, Number> queryWeightTF = new TreeMap<>();
+
+        for(String term : queryTF.keySet()){
+            double weightTFValue = 1 + Math.log10(queryTF.get(term));
+            double roundedValue = Math.round(weightTFValue * 100000.0) / 100000.0;
+
+            if (roundedValue == Math.floor(roundedValue)) {
+                queryWeightTF.put(term, (int) roundedValue);
+            } else {
+                queryWeightTF.put(term, roundedValue);
+            }
+
+        }
+        return queryWeightTF;
+    }
     public static Map<String, Number> retrieveQueryIDF(List<String> query, Map<String, Number> idfMap) {
         Map<String, Number> queryIDF = new TreeMap<>();
 
