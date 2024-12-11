@@ -4,7 +4,7 @@ import java.util.*;
 
 public class QueryOutputs {
 
-    public static List<String> removeKeyWords (List<String> query){
+    private static List<String> removeKeyWords (List<String> query){
         List<String> queryResult = new ArrayList<>();
         for(String term : query){
             if(!term.equals("AND") && !term.equals("OR") && !term.equals("AND NOT") && !term.equals("OR NOT")){
@@ -124,10 +124,50 @@ public class QueryOutputs {
                 normalizedDocTF_IDF.put(term, docTF_IDF);
             }
         }
-
         return normalizedDocTF_IDF;
     }
 
+    public static Map<String, Map<Integer, Number>> productQueryMatchedDocs (Map<String, Map<Integer, Number>> normalizedDocTF_IDF , Map<String, Number> normalizedQueryTF_IDF){
+        Map<String, Map<Integer, Number>> product = new TreeMap<>();
 
+        for(String term : normalizedDocTF_IDF.keySet()){
+            Map<Integer, Number> termDocs = new HashMap<>();
+
+            for(Integer docID : normalizedDocTF_IDF.get(term).keySet()){
+                double productValue = normalizedDocTF_IDF.get(term).get(docID).doubleValue() * normalizedQueryTF_IDF.get(term).doubleValue();
+                double roundedValue = Math.round(productValue * 100000.0) / 100000.0;
+
+                if (roundedValue == Math.floor(roundedValue)) {
+                    termDocs.put(docID, (int) roundedValue);
+                } else {
+                    termDocs.put(docID, roundedValue);
+                }
+            }
+
+            product.put(term ,termDocs);
+        }
+
+        return product;
+    }
+    public static Map<Integer, Double> computeSimilarity(Map<String, Map<Integer, Number>> productQueryMatchedDocs) {
+        Map<Integer, Double> similarityScores = new TreeMap<>();
+
+        for (Map<Integer, Number> docValues : productQueryMatchedDocs.values()) {
+            for (Map.Entry<Integer, Number> entry : docValues.entrySet()) {
+                int docId = entry.getKey();
+                double value = entry.getValue().doubleValue();
+
+                similarityScores.put(docId, similarityScores.getOrDefault(docId, 0.0) + value);
+            }
+        }
+        similarityScores.replaceAll((docId, score) -> Math.round(score * 10000.0) / 10000.0);
+
+        return similarityScores;
+    }
+    public static List<Map.Entry<Integer, Double>> rankDocuments(Map<Integer, Double> similarityScores) {
+        List<Map.Entry<Integer, Double>> rankedDocuments = new ArrayList<>(similarityScores.entrySet());
+        rankedDocuments.sort((entry1, entry2) -> Double.compare(entry2.getValue(), entry1.getValue()));
+        return rankedDocuments;
+    }
 
 }

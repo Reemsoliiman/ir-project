@@ -137,6 +137,25 @@ public class Main {
                     Map<String, Map<Integer, Number>> normalizedDocTF_IDF = QueryOutputs.computeNormalizedDocTF_IDF(normalizedTFIDF , parsedQuery ,queryResult);
                     printTable("Doc Normalized TF * IDF" , normalizedDocTF_IDF);
 
+                    Map<String, Map<Integer, Number>> productQueryMatchedDocs =QueryOutputs.productQueryMatchedDocs(normalizedDocTF_IDF , normalizedQueryTF_IDF);
+                    printTable("product (Query * MatchedDocs) " , productQueryMatchedDocs);
+
+                    Map<Integer, Double> similarityScores = QueryOutputs.computeSimilarity(productQueryMatchedDocs);
+                    printTable("Similarity Scores", similarityScores);
+
+                    List<Map.Entry<Integer, Double>> rankedDocuments = QueryOutputs.rankDocuments(similarityScores);
+                    System.out.println("\n" + "═".repeat(50));
+                    System.out.println(" Ranked Documents by Similarity ");
+                    System.out.println("═".repeat(50));
+                    System.out.printf("%-20s | %-20s\n", "Document", "Similarity");
+                    System.out.println("─".repeat(50));
+
+                    for (Map.Entry<Integer, Double> entry : rankedDocuments) {
+                        System.out.printf("Doc%-18d | %-20.4f\n", entry.getKey(), entry.getValue());
+                    }
+                    System.out.println("═".repeat(50));
+
+
                 } else if (choice == 2) {
                     System.out.println("Exiting...");
                 } else {
