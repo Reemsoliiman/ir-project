@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -83,7 +82,7 @@ public class Main {
 //        List<Integer> result = QueryProcessor.logicalOperatorResult(queryPositionalIndex , query);
 //        List<Integer> result = QueryProcessor.handleORNOT(outPut , queryPositionalIndex2);
 
-        List<Integer> result = QueryProcessor.showQuertResult(query);
+        List<Integer> result = QueryProcessor.showQueryResult(query);
         System.out.println("logicalOperatorResult => " + result);
 //        =================================================================================================
     }

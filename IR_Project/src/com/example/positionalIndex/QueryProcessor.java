@@ -126,15 +126,8 @@ public class QueryProcessor {
 
         Set<Integer> resultSet = new HashSet<>();
 
-        List<Integer> query1Docs = new ArrayList<>();
-        List<Integer> query2Docs = new ArrayList<>();
-        if(query.size() == 3){
-            query1Docs = queryPositionalIndex.get(query.get(0));
-            query2Docs = queryPositionalIndex.get(query.get(2));
-        }else if(query.size() == 2){
-            query1Docs = queryPositionalIndex.get(query.get(0));
-            query2Docs = queryPositionalIndex.get(query.get(1));
-        }
+        List<Integer> query1Docs = queryPositionalIndex.get(query.get(0));
+        List<Integer> query2Docs = queryPositionalIndex.get(query.get(2));
 
         if (query.contains("AND NOT")) {
             if (query1Docs != null) {
@@ -179,7 +172,7 @@ public class QueryProcessor {
     }
 
 
-    public static List<Integer> showQuertResult(List<String> queryPraser) throws IOException{
+    public static List<Integer> showQueryResult(List<String> queryPraser) throws IOException{
 
         List<Integer> result = new ArrayList<>();
         String filePath = "mapReduceOutput.txt";
