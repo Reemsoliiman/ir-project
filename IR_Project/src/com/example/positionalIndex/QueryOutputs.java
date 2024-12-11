@@ -3,11 +3,16 @@ package com.example.positionalIndex;
 import java.util.*;
 
 public class QueryOutputs {
+
     public static List<String> removeKeyWords (List<String> query){
         List<String> queryResult = new ArrayList<>();
         for(String term : query){
             if(!term.equals("AND") && !term.equals("OR") && !term.equals("AND NOT") && !term.equals("OR NOT")){
-                queryResult.add(term);
+                if(term.trim().contains(" ")){
+                    queryResult.addAll(List.of(term.split(" ")));
+                }else{
+                    queryResult.add(term);
+                }
             }
         }
         return queryResult;
