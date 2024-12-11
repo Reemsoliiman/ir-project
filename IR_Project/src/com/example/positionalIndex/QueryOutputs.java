@@ -20,12 +20,13 @@ public class QueryOutputs {
 
     public static Map<String, Integer> computeQueryTF (List<String> query){
         Map<String, Integer> queryTF = new TreeMap<>();
+        List<String> resultQuery = removeKeyWords(query);
 
-         for(String term : query){
+         for(String term : resultQuery){
              int count = 0;
 
-             for(int i = 0 ; i < query.size() ; i++){
-                 if(query.get(i).equals(term)){
+             for(int i = 0 ; i < resultQuery.size() ; i++){
+                 if(resultQuery.get(i).equals(term)){
                      count++;
                  }
              }
@@ -52,8 +53,9 @@ public class QueryOutputs {
     }
     public static Map<String, Number> retrieveQueryIDF(List<String> query, Map<String, Number> idfMap) {
         Map<String, Number> queryIDF = new TreeMap<>();
+        List<String> resultQuery = removeKeyWords(query);
 
-        for (String term : query) {
+        for (String term : resultQuery) {
             if (idfMap.containsKey(term)) {
                 queryIDF.put(term, idfMap.get(term));
             } else {

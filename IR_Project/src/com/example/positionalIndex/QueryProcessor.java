@@ -149,29 +149,29 @@ public class QueryProcessor {
     }
 
 
-    public static List<Integer> showQueryResult(List<String> queryPraser) throws IOException{
+    public static List<Integer> showQueryResult(List<String> queryParser) throws IOException{
 
         List<Integer> result = new ArrayList<>();
         String filePath = "mapReduceOutput.txt";
         Map<String, Map<Integer, List<Integer>>> allDocs = positionalIndexParser.parseFile(filePath);
 
         Map<String, List<Integer>> queryPositionalIndex = new HashMap<>();
-        Map<String, List<Integer>> query1 = getQueryPositionalIndex(allDocs , queryPraser.get(0));
-        Map<String, List<Integer>> query2 = getQueryPositionalIndex(allDocs , queryPraser.get(2));
+        Map<String, List<Integer>> query1 = getQueryPositionalIndex(allDocs , queryParser.get(0));
+        Map<String, List<Integer>> query2 = getQueryPositionalIndex(allDocs , queryParser.get(2));
         queryPositionalIndex.putAll(query1);
         queryPositionalIndex.putAll(query2);
 
-        result = logicalOperatorResult(queryPositionalIndex , queryPraser.subList(0, 3));
+        result = logicalOperatorResult(queryPositionalIndex , queryParser.subList(0, 3));
 
-        if(queryPraser.size() > 3){
-            for(int i = 3 ; i < queryPraser.size() ; i += 2){
+        if(queryParser.size() > 3){
+            for(int i = 3; i < queryParser.size() ; i += 2){
 
                 queryPositionalIndex.put("result" , result);
-                Map<String, List<Integer>> queryPart2 = getQueryPositionalIndex(allDocs , queryPraser.get(i + 1));
+                Map<String, List<Integer>> queryPart2 = getQueryPositionalIndex(allDocs , queryParser.get(i + 1));
                 queryPositionalIndex.putAll(queryPart2);
                 List<String> query = new ArrayList<>();
                 query.add("result");
-                query.addAll(queryPraser.subList(i, i + 2));
+                query.addAll(queryParser.subList(i, i + 2));
 
                 result = logicalOperatorResult(queryPositionalIndex , query);
             }

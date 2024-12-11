@@ -46,7 +46,7 @@ public class Main {
         printTable("Normalized TF-IDF", normalizedTFIDF);
 
 //---------------------------------------------testing--------------------------------------------------------------------//
-//        String queryInput = "fools fear in";
+//        String queryInput = "fools fear in AND NOT rush to tread where";
 //
 //        List<String> parsedQuery = QueryProcessor.queryParser(queryInput);
 //        System.out.println("Parsed Query: " + parsedQuery);
@@ -58,7 +58,7 @@ public class Main {
 //        System.out.println("QueryTF: " + queryTF);
 //
 //        Map<String, Number> queryWeightTF = QueryOutputs.computeQueryWeightTF(queryTF);
-//        System.out.println("QueryTF: " + queryWeightTF);
+//        System.out.println("QueryWeightTF: " + queryWeightTF);
 //
 //        Map<String, Number> queryIDF = QueryOutputs.retrieveQueryIDF(resultQuery, IDF);
 //        System.out.println("Query IDF: " + queryIDF);
@@ -140,6 +140,24 @@ public class Main {
                         }
                     }
                     System.out.println("Query Result => " + queryResult);
+
+                    Map<String, Integer> queryTF = QueryOutputs.computeQueryTF(parsedQuery);
+                    printTable("Query TF" , queryTF);
+
+                    Map<String, Number> queryWeightTF = QueryOutputs.computeQueryWeightTF(queryTF);
+                    printTable("Query WeightTF" , queryWeightTF);
+
+                    Map<String, Number> queryIDF = QueryOutputs.retrieveQueryIDF(parsedQuery, IDF);
+                    printTable("Query IDF" , queryIDF);
+
+                    Map<String, Number> queryTF_IDF = QueryOutputs.computeQueryTF_IDF(queryWeightTF, queryIDF);
+                    printTable("Query TF * IDF" , queryTF_IDF);
+
+                    double queryLength = QueryOutputs.computeQueryLength(queryTF_IDF);
+                    System.out.println("Query Length: " + queryLength);
+
+                    Map<String, Number> normalizedQueryTF_IDF = QueryOutputs.computeNormalizedQueryTF_IDF(queryTF_IDF);
+                    printTable("Query Normalized TF * IDF" , normalizedQueryTF_IDF);
 
                 } else if (choice == 2) {
                     System.out.println("Exiting...");
