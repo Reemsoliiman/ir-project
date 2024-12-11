@@ -46,93 +46,32 @@ public class Main {
         printTable("Normalized TF-IDF", normalizedTFIDF);
 
 //---------------------------------------------testing--------------------------------------------------------------------//
-        String queryInput = "fools fear in";
-
-        List<String> parsedQuery = QueryProcessor.queryParser(queryInput);
-        System.out.println("Parsed Query: " + parsedQuery);
-
-        List<String> resultQuery = QueryOutputs.removeKeyWords(parsedQuery);
-        System.out.println("Query: " + resultQuery);
-
-        Map<String, Integer> queryTF = QueryOutputs.computeQueryTF(resultQuery);
-        System.out.println("QueryTF: " + queryTF);
-
-        Map<String, Number> queryWeightTF = QueryOutputs.computeQueryWeightTF(queryTF);
-        System.out.println("QueryTF: " + queryWeightTF);
-
-        Map<String, Number> queryIDF = QueryOutputs.retrieveQueryIDF(resultQuery, IDF);
-        System.out.println("Query IDF: " + queryIDF);
-        Map<String, Number> queryTF_IDF = QueryOutputs.computeQueryTF_IDF(queryWeightTF, queryIDF);
-        System.out.println("Query TF * IDF: " + queryTF_IDF);
-
-        double queryLength = QueryOutputs.computeQueryLength(queryTF_IDF);
-        System.out.println("Query Length: " + queryLength);
-
-        Map<String, Number> normalizedQueryTF_IDF = QueryOutputs.computeNormalizedQueryTF_IDF(queryTF_IDF);
-        System.out.println("Query Normalized TF * IDF: " + normalizedQueryTF_IDF);
+//        String queryInput = "fools fear in";
+//
+//        List<String> parsedQuery = QueryProcessor.queryParser(queryInput);
+//        System.out.println("Parsed Query: " + parsedQuery);
+//
+//        List<String> resultQuery = QueryOutputs.removeKeyWords(parsedQuery);
+//        System.out.println("Query: " + resultQuery);
+//
+//        Map<String, Integer> queryTF = QueryOutputs.computeQueryTF(resultQuery);
+//        System.out.println("QueryTF: " + queryTF);
+//
+//        Map<String, Number> queryWeightTF = QueryOutputs.computeQueryWeightTF(queryTF);
+//        System.out.println("QueryTF: " + queryWeightTF);
+//
+//        Map<String, Number> queryIDF = QueryOutputs.retrieveQueryIDF(resultQuery, IDF);
+//        System.out.println("Query IDF: " + queryIDF);
+//        Map<String, Number> queryTF_IDF = QueryOutputs.computeQueryTF_IDF(queryWeightTF, queryIDF);
+//        System.out.println("Query TF * IDF: " + queryTF_IDF);
+//
+//        double queryLength = QueryOutputs.computeQueryLength(queryTF_IDF);
+//        System.out.println("Query Length: " + queryLength);
+//
+//        Map<String, Number> normalizedQueryTF_IDF = QueryOutputs.computeNormalizedQueryTF_IDF(queryTF_IDF);
+//        System.out.println("Query Normalized TF * IDF: " + normalizedQueryTF_IDF);
 
 //        ==========================================================================================
-
-<<<<<<< HEAD
-//        int choice = 0;
-//        do{
-//            System.out.println("1- Write Query");
-//            System.out.println("2- Exit");
-//            System.out.print("Enter your choice: ");
-//            if (input.hasNextInt()) {
-//                choice = input.nextInt();
-//
-//                if (choice == 1) {
-//                    StringBuilder query = new StringBuilder();
-//
-//                    System.out.print("Enter query: ");
-//                    String query1 = input.next();
-//                    query.append(query1).append(" ");
-//
-//                    System.out.print("Enter operator: ");
-//                    String op = input.next();
-//                    query.append(op).append(" ");
-//
-//                    System.out.print("Enter query: ");
-//                    String query2 = input.next();
-//                    query.append(query2);
-//
-//                    while (true) {
-//                        System.out.print("Do you want to add another operator and query? (y/n): ");
-//                        String continueChoice = input.next();
-//
-//                        if (continueChoice.equalsIgnoreCase("n")) {
-//                            break;
-//                        } else if (continueChoice.equalsIgnoreCase("y")) {
-//                            System.out.print("Enter operator: ");
-//                            String nextOp = input.next();
-//                            query.append(" ").append(nextOp);
-//
-//                            System.out.print("Enter query: ");
-//                            String nextQuery = input.next();
-//                            query.append(" ").append(nextQuery);
-//                        } else {
-//                            System.out.println("Invalid choice. Please type 'y' or 'n'.");
-//                        }
-//                    }
-//
-//                    String finalQuery = query.toString();
-//
-//                    List<String> parsedQuery = QueryProcessor.queryParser(finalQuery);
-//                    System.out.println("Query ==> " + parsedQuery);
-//
-//                } else if (choice == 2) {
-//                    System.out.println("Exiting...");
-//                } else {
-//                    System.out.println("Invalid choice. Please enter 1 or 2.");
-//                    choice = 0;
-//                }
-//            } else {
-//                System.out.println("Invalid input. Please enter a number (1 or 2).");
-//                input.next();
-//            }
-//        }while (choice != 2);
-=======
         int choice = 0;
         do{
             System.out.println("1- Write Query");
@@ -215,7 +154,6 @@ public class Main {
 
             System.out.println("============================================================================");
         }while (choice != 2);
->>>>>>> 9a52ed8a5b851e4f5008624111d1dfa4d376679c
     }
 
 
