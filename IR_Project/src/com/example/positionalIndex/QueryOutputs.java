@@ -34,6 +34,22 @@ public class QueryOutputs {
          }
          return queryTF;
     }
+
+    public static Map<String, Number> computeQueryWeightTF (Map<String, Integer> queryTF){
+        Map<String, Number> queryWeightTF = new TreeMap<>();
+
+        for(String term : queryTF.keySet()){
+            double weightTFValue = 1 + Math.log10(queryTF.get(term));
+            double roundedValue = Math.round(weightTFValue * 100000.0) / 100000.0;
+
+            if (roundedValue == Math.floor(roundedValue)) {
+                queryWeightTF.put(term, (int) roundedValue);
+            } else {
+                queryWeightTF.put(term, roundedValue);
+            }
+        }
+        return queryWeightTF;
+    }
     public static Map<String, Number> retrieveQueryIDF(List<String> query, Map<String, Number> idfMap) {
         Map<String, Number> queryIDF = new TreeMap<>();
 
@@ -47,6 +63,23 @@ public class QueryOutputs {
         return queryIDF;
     }
 
+    public static Map<String, Number> computeQueryTF_IDF(Map<String, Number> queryWeightTF, Map<String, Number> queryIDF) {
+        Map<String, Number> queryTF_IDF = new TreeMap<>();
 
+        for (String term : queryWeightTF.keySet()) {
+            double tf = queryWeightTF.get(term).doubleValue();
+            double idf = queryIDF.getOrDefault(term, 0).doubleValue();
+            double tf_idf = tf * idf;
+            double roundedValue = Math.round(tf_idf * 100000.0) / 100000.0;
+
+            if (roundedValue == Math.floor(roundedValue)) {
+                queryTF_IDF.put(term, (int) roundedValue);
+            } else {
+                queryTF_IDF.put(term, roundedValue);
+            }
+        }
+
+        return queryTF_IDF;
+    }
 
 }

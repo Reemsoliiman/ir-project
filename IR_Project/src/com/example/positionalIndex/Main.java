@@ -52,10 +52,16 @@ public class Main {
         System.out.println("Query: " + resultQuery);
 
         Map<String, Integer> queryTF = QueryOutputs.computeQueryTF(resultQuery);
-        System.out.println("QueryTF: " + queryTF);
+        System.out.println("Query TF: " + queryTF);
+
+        Map<String, Number> queryWeightTF = QueryOutputs.computeQueryWeightTF(queryTF);
+        System.out.println("Query W TF: " + queryWeightTF);
 
         Map<String, Number> queryIDF = QueryOutputs.retrieveQueryIDF(resultQuery, IDF);
         System.out.println("Query IDF: " + queryIDF);
+
+        Map<String, Number> queryTF_IDF = QueryOutputs.computeQueryTF_IDF(queryWeightTF, queryIDF);
+        System.out.println("Query TF * IDF: " + queryTF_IDF);
 
     }
 
