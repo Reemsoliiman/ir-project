@@ -129,15 +129,15 @@ public class QueryProcessor {
                     resultSet.removeAll(query2Docs);
                 }
             }
-        } else if (query.contains("OR NOT")) {
-            if (query1Docs != null) {
-                resultSet.addAll(query1Docs);
-            }
-            if (query2Docs != null) {
-                Set<Integer> allDocs = getAllDocumentIDs(queryPositionalIndex);
-                allDocs.removeAll(query2Docs);
-                resultSet.addAll(allDocs);
-            }
+//        } else if (query.contains("OR NOT")) {
+//            if (query1Docs != null) {
+//                resultSet.addAll(query1Docs);
+//            }
+//            if (query2Docs != null) {
+//                Set<Integer> allDocs = getAllDocumentIDs(queryPositionalIndex);
+//                allDocs.removeAll(query2Docs);
+//                resultSet.addAll(allDocs);
+//            }
         } else if (query.contains("AND")) {
             if (query1Docs != null && query2Docs != null) {
                 for (int doc : query2Docs) {
@@ -158,11 +158,18 @@ public class QueryProcessor {
         return new ArrayList<>(resultSet);
     }
 
-    private static Set<Integer> getAllDocumentIDs(Map<String, List<Integer>> queryPositionalIndex) {
+    public static List<Integer> handleORNOT(Map<String, Map<Integer, List<Integer>>> positionalIndexParser, Map<String, List<Integer>> queryPositionalIndex) {
         Set<Integer> allDocs = new HashSet<>();
-        for (List<Integer> docs : queryPositionalIndex.values()) {
-            allDocs.addAll(docs);
+        for (Map<Integer, List<Integer>> docs : positionalIndexParser.values()) {
+            allDocs.addAll(docs.keySet());
         }
-        return allDocs;
+
+        Set<Integer> queryDocs = new HashSet<>();
+        for (List<Integer> docList : queryPositionalIndex.values()) {
+            queryDocs.addAll(docList);
+        }
+
+        allDocs.removeAll(queryDocs);
+        return new ArrayList<>(allDocs);
     }
 }
