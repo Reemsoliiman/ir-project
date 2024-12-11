@@ -77,45 +77,67 @@ public class Main {
             System.out.print("Enter your choice: ");
             if (input.hasNextInt()) {
                 choice = input.nextInt();
+                input.nextLine();
 
                 if (choice == 1) {
                     StringBuilder query = new StringBuilder();
 
                     System.out.print("Enter query: ");
-                    String query1 = input.next();
+                    String query1 = input.nextLine();
                     query.append(query1).append(" ");
 
-                    System.out.print("Enter operator: ");
-                    String op = input.next();
-                    query.append(op).append(" ");
-
-                    System.out.print("Enter query: ");
-                    String query2 = input.next();
-                    query.append(query2);
-
-                    while (true) {
-                        System.out.print("Do you want to add another operator and query? (y/n): ");
-                        String continueChoice = input.next();
-
+                    while (true){
+                        System.out.print("Do you want to add operator and query? (y/n): ");
+                        String continueChoice = input.nextLine();
                         if (continueChoice.equalsIgnoreCase("n")) {
                             break;
                         } else if (continueChoice.equalsIgnoreCase("y")) {
                             System.out.print("Enter operator: ");
-                            String nextOp = input.next();
-                            query.append(" ").append(nextOp);
+                            String op = input.nextLine();
+                            query.append(op).append(" ");
 
                             System.out.print("Enter query: ");
-                            String nextQuery = input.next();
-                            query.append(" ").append(nextQuery);
-                        } else {
+                            String query2 = input.nextLine();
+                            query.append(query2);
+                        }else {
                             System.out.println("Invalid choice. Please type 'y' or 'n'.");
+                        }
+                        while (true) {
+                            System.out.print("Do you want to add another operator and query? (y/n): ");
+                            continueChoice = input.nextLine();
+
+                            if (continueChoice.equalsIgnoreCase("n")) {
+                                break;
+                            } else if (continueChoice.equalsIgnoreCase("y")) {
+                                System.out.print("Enter operator: ");
+                                String nextOp = input.nextLine();
+                                query.append(" ").append(nextOp);
+
+                                System.out.print("Enter query: ");
+                                String nextQuery = input.nextLine();
+                                query.append(" ").append(nextQuery);
+                            } else {
+                                System.out.println("Invalid choice. Please type 'y' or 'n'.");
+                            }
                         }
                     }
 
                     String finalQuery = query.toString();
 
                     List<String> parsedQuery = QueryProcessor.queryParser(finalQuery);
-                    System.out.println("Query ==> " + parsedQuery);
+                    System.out.println("Query => " + parsedQuery);
+                    List<Integer> queryResult = new ArrayList<>();
+
+                    if(parsedQuery.size() > 1){
+                        queryResult = QueryProcessor.showQueryResult(parsedQuery);
+                    }else{
+                        Map<String, List<Integer>> queryPositionalIndex = QueryProcessor.getQueryPositionalIndex(outPut , finalQuery);
+
+                        for (List<Integer> list : queryPositionalIndex.values()) {
+                            queryResult.addAll(list);
+                        }
+                    }
+                    System.out.println("Query Result => " + queryResult);
 
                 } else if (choice == 2) {
                     System.out.println("Exiting...");
@@ -127,6 +149,8 @@ public class Main {
                 System.out.println("Invalid input. Please enter a number (1 or 2).");
                 input.next();
             }
+
+            System.out.println("============================================================================");
         }while (choice != 2);
     }
 
