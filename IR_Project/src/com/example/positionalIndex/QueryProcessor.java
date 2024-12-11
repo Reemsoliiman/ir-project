@@ -1,9 +1,6 @@
 package com.example.positionalIndex;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 
 public class QueryProcessor {
@@ -62,9 +59,9 @@ public class QueryProcessor {
 
         return result;
     }
-    public static Map<String, List<Integer>> getQueryPositionalIndex(Map<String, Map<Integer, List<Integer>>> positionalIndex, List<String> input) {
+    public static Map<String, List<Integer>> getQueryPositionalIndex(Map<String, Map<Integer, List<Integer>>> positionalIndex, List<String> query) {
         Map<String, List<Integer>> queryPositionalIndex = new TreeMap<>();
-        String index = input.get(0).trim();
+        String index = query.get(0).trim();
         if (index.contains(" ")) {
             String[] terms = index.split(" ");
             Map<Integer, List<Integer>> firstTermDocs = positionalIndex.get(terms[0]);
@@ -118,6 +115,45 @@ public class QueryProcessor {
         }
 
         return queryPositionalIndex;
+    }
+
+    public static List<Integer> logicalOperatorResult (Map<String, List<Integer>> queryPositionalIndex , List<String> query){
+        Set<Integer> resultSet = new HashSet<>();
+
+        List<Integer> query1Docs = queryPositionalIndex.get(query.get(0));
+        List<Integer> query2Docs = queryPositionalIndex.get(query.get(2));
+
+        if(query.contains("AND")){
+            if (query1Docs != null && query2Docs != null) {
+                for (int i = 0; i < query2Docs.size(); i++) {
+                    if (query1Docs.contains(query2Docs.get(i))) {
+                        resultSet.add(query2Docs.get(i));
+                    }
+                }
+            }
+        }else if(query.contains("OR")) {
+            if (query1Docs != null) {
+                resultSet.addAll(query1Docs);
+            }
+            if (query2Docs != null) {
+                resultSet.addAll(query2Docs);
+            }
+        }
+//        else if(query.contains("AND NOT")){
+//            if (query1Docs != null && query2Docs != null) {
+//                for (int i = 0; i < query1Docs.size(); i++) {
+//                    if (!query2Docs.contains(query1Docs.get(i))) {
+//                        resultSet.add(query1Docs.get(i));
+//                    }
+//                }
+//            }
+//        }
+//        else if(query.contains("OR NOT")){
+//
+//        }
+
+        List<Integer> result = new ArrayList<>(resultSet);
+        return result;
     }
 
 

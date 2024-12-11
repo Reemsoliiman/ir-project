@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -42,10 +43,28 @@ public class Main {
         Map<String, Map<Integer, Number>> normalizedTFIDF = TF_IDF.normalizeTFIDF(TFIDF, docLengths);
         printTable("Normalized TF-IDF", normalizedTFIDF);
 
-//        List<String> input = new ArrayList<>();
-//        input.add("to tread");
-//        Map<String, List<Integer>> queryPositionalIndex = QueryProcessor.getQueryPositionalIndex(outPut , input);
-//        System.out.println("queryPositionalIndex =>" + queryPositionalIndex);
+//        List<String> query1 = new ArrayList<>();
+//        query1.add("to tread");
+//        List<String> query2 = new ArrayList<>();
+//        query2.add("fear");
+//
+//        Map<String, List<Integer>> queryPositionalIndex1 = QueryProcessor.getQueryPositionalIndex(outPut , query1);
+//        System.out.println("queryPositionalIndex1 =>" + queryPositionalIndex1);
+//
+//        Map<String, List<Integer>> queryPositionalIndex2 = QueryProcessor.getQueryPositionalIndex(outPut , query2);
+//        System.out.println("queryPositionalIndex2 =>" + queryPositionalIndex2);
+//
+//        Map<String, List<Integer>> queryPositionalIndex = new TreeMap<>();
+//        queryPositionalIndex.putAll(queryPositionalIndex1);
+//        queryPositionalIndex.putAll(queryPositionalIndex2);
+//
+//        List<String> query = new ArrayList<>();
+//        query.addAll(query1);
+//        query.add("AND NOT");
+//        query.addAll(query2);
+//
+//        List<Integer> result = QueryProcessor.logicalOperatorResult(queryPositionalIndex , query);
+//        System.out.println("logicalOperatorResult ==> " + result);
     }
 
 
