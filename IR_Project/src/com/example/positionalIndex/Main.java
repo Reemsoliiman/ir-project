@@ -9,8 +9,8 @@ import java.util.TreeMap;
 public class Main {
     public static void main(String[] args) throws IOException {
 //
-//        String filePath = "mapReduceOutput.txt";
-//        Map<String, Map<Integer, List<Integer>>> outPut = positionalIndexParser.parseFile(filePath);
+        String filePath = "mapReduceOutput.txt";
+        Map<String, Map<Integer, List<Integer>>> outPut = positionalIndexParser.parseFile(filePath);
 //        printTable("Positional Index", outPut);
 //
 //        int totalDocuments = 10;
@@ -44,10 +44,10 @@ public class Main {
 //        printTable("Normalized TF-IDF", normalizedTFIDF);
 
 //---------------------------------------------dol elly bgarab fehom--------------------------------------------------------------------//
-        String query = "angels AND NOT caeser";
-
-        List<String> parsedQuery = QueryProcessor.queryParser(query);
-        System.out.println("Parsed Query: " + parsedQuery);
+//        String query = "angels AND NOT caeser";
+//
+//        List<String> parsedQuery = QueryProcessor.queryParser(query);
+//        System.out.println("Parsed Query: " + parsedQuery);
 
 //        Map<String, List<Integer>> queryPositionalIndex = QueryProcessor.getQueryPositionalIndex( , parsedQuery);
 //        System.out.println("Query Positional Index: " + queryPositionalIndex);
@@ -55,28 +55,31 @@ public class Main {
 //        List<Integer> result = QueryProcessor.logicalOperatorResult(queryPositionalIndex, parsedQuery);
 //        System.out.println("Resulting Documents: " + result);
 //-----------------------------------------------------------------------------------------------------------------//
-//        List<String> query1 = new ArrayList<>();
-//        query1.add("to tread");
-//        List<String> query2 = new ArrayList<>();
-//        query2.add("fear");
-//
-//        Map<String, List<Integer>> queryPositionalIndex1 = QueryProcessor.getQueryPositionalIndex(outPut , query1);
-//        System.out.println("queryPositionalIndex1 =>" + queryPositionalIndex1);
-//
-//        Map<String, List<Integer>> queryPositionalIndex2 = QueryProcessor.getQueryPositionalIndex(outPut , query2);
-//        System.out.println("queryPositionalIndex2 =>" + queryPositionalIndex2);
-//
-//        Map<String, List<Integer>> queryPositionalIndex = new TreeMap<>();
-//        queryPositionalIndex.putAll(queryPositionalIndex1);
-//        queryPositionalIndex.putAll(queryPositionalIndex2);
-//
-//        List<String> query = new ArrayList<>();
-//        query.addAll(query1);
-//        query.add("AND NOT");
-//        query.addAll(query2);
-//
+//      ===================da run OR NOT ==========================================================
+        List<String> query1 = new ArrayList<>();
+        query1.add("to tread");
+        List<String> query2 = new ArrayList<>();
+        query2.add("fear");
+
+        Map<String, List<Integer>> queryPositionalIndex1 = QueryProcessor.getQueryPositionalIndex(outPut , query1);
+        System.out.println("queryPositionalIndex1 =>" + queryPositionalIndex1);
+
+        Map<String, List<Integer>> queryPositionalIndex2 = QueryProcessor.getQueryPositionalIndex(outPut , query2);
+        System.out.println("queryPositionalIndex2 =>" + queryPositionalIndex2);
+
+        Map<String, List<Integer>> queryPositionalIndex = new TreeMap<>();
+        queryPositionalIndex.putAll(queryPositionalIndex1);
+        queryPositionalIndex.putAll(queryPositionalIndex2);
+
+        List<String> query = new ArrayList<>();
+        query.addAll(query1);
+        query.add("OR NOT");
+        query.addAll(query2);
+
 //        List<Integer> result = QueryProcessor.logicalOperatorResult(queryPositionalIndex , query);
-//        System.out.println("logicalOperatorResult ==> " + result);
+        List<Integer> result = QueryProcessor.handleORNOT(outPut , queryPositionalIndex2);
+        System.out.println("logicalOperatorResult ==> " + result);
+//        =================================================================================================
     }
 
 
