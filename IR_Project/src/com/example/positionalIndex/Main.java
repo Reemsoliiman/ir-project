@@ -76,8 +76,8 @@ public class Main {
         query.add("OR NOT");
         query.addAll(query2);
 
-//        List<Integer> result = QueryProcessor.logicalOperatorResult(queryPositionalIndex , query);
-        List<Integer> result = QueryProcessor.handleORNOT(outPut , queryPositionalIndex2);
+        List<Integer> result = QueryProcessor.logicalOperatorResult(queryPositionalIndex , query);
+//        List<Integer> result = QueryProcessor.handleORNOT(outPut , queryPositionalIndex2);
         System.out.println("logicalOperatorResult ==> " + result);
 //        =================================================================================================
     }
