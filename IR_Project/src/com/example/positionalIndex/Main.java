@@ -43,47 +43,52 @@ public class Main {
 //        printTable("Normalized TF-IDF", normalizedTFIDF);
 
 //---------------------------------------------dol elly bgarab fehom--------------------------------------------------------------------//
-//        String query = "angels AND NOT caeser";
-//
-//        List<String> parsedQuery = QueryProcessor.queryParser(query);
-//        System.out.println("Parsed Query: " + parsedQuery);
+        String queryInput = "angels OR anotony OR NOT caeser AND angels";
 
+        List<String> parsedQuery = QueryProcessor.queryParser(queryInput);
+        System.out.println("Parsed Query: " + parsedQuery);
+
+        List<String> resultQuery = QueryOutputs.removeKeyWords(parsedQuery);
+        System.out.println("Query: " + resultQuery);
+
+        Map<String, Integer> queryTF = QueryOutputs.computeQueryTF(resultQuery);
+        System.out.println("QueryTF: " + queryTF);
 //        Map<String, List<Integer>> queryPositionalIndex = QueryProcessor.getQueryPositionalIndex( , parsedQuery);
 //        System.out.println("Query Positional Index: " + queryPositionalIndex);
-
+//
 //        List<Integer> result = QueryProcessor.logicalOperatorResult(queryPositionalIndex, parsedQuery);
 //        System.out.println("Resulting Documents: " + result);
 //-----------------------------------------------------------------------------------------------------------------//
 //      ===================da run OR NOT ==========================================================
-        String query1 = "to tread";
-
-        String query2 = "fear";
-
-        Map<String, List<Integer>> queryPositionalIndex1 = QueryProcessor.getQueryPositionalIndex(outPut , query1);
-        System.out.println("queryPositionalIndex1 =>" + queryPositionalIndex1);
-
-        Map<String, List<Integer>> queryPositionalIndex2 = QueryProcessor.getQueryPositionalIndex(outPut , query2);
-        System.out.println("queryPositionalIndex2 =>" + queryPositionalIndex2);
-
-        Map<String, List<Integer>> queryPositionalIndex3 = QueryProcessor.getQueryPositionalIndex(outPut , "where");
-        System.out.println("queryPositionalIndex3 =>" + queryPositionalIndex3);
+//        String query1 = "to tread";
+//
+//        String query2 = "fear";
+//
+//        Map<String, List<Integer>> queryPositionalIndex1 = QueryProcessor.getQueryPositionalIndex(outPut , query1);
+//        System.out.println("queryPositionalIndex1 =>" + queryPositionalIndex1);
+//
+//        Map<String, List<Integer>> queryPositionalIndex2 = QueryProcessor.getQueryPositionalIndex(outPut , query2);
+//        System.out.println("queryPositionalIndex2 =>" + queryPositionalIndex2);
+//
+//        Map<String, List<Integer>> queryPositionalIndex3 = QueryProcessor.getQueryPositionalIndex(outPut , "where");
+//        System.out.println("queryPositionalIndex3 =>" + queryPositionalIndex3);
 //
 //        Map<String, List<Integer>> queryPositionalIndex = new TreeMap<>();
 //        queryPositionalIndex.putAll(queryPositionalIndex1);
 //        queryPositionalIndex.putAll(queryPositionalIndex2);
 
-        List<String> query = new ArrayList<>();
-        query.add(query1);
-        query.add("AND");
-        query.add(query2);
-        query.add("OR NOT");
-        query.add("where");
+//        List<String> query = new ArrayList<>();
+//        query.add(query1);
+//        query.add("AND");
+//        query.add(query2);
+//        query.add("OR NOT");
+//        query.add("where");
 
 //        List<Integer> result = QueryProcessor.logicalOperatorResult(queryPositionalIndex , query);
 //        List<Integer> result = QueryProcessor.handleORNOT(outPut , queryPositionalIndex2);
 
-        List<Integer> result = QueryProcessor.showQueryResult(query);
-        System.out.println("logicalOperatorResult => " + result);
+//        List<Integer> result = QueryProcessor.showQueryResult(query);
+//        System.out.println("logicalOperatorResult => " + result);
 //        =================================================================================================
     }
 //
