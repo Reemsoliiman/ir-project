@@ -4,7 +4,7 @@ import java.util.*;
 
 public class QueryOutputs {
 
-    public static List<String> removeKeyWords (List<String> query){
+    private static List<String> removeKeyWords (List<String> query){
         List<String> queryResult = new ArrayList<>();
         for(String term : query){
             if(!term.equals("AND") && !term.equals("OR") && !term.equals("AND NOT") && !term.equals("OR NOT")){
@@ -128,6 +128,28 @@ public class QueryOutputs {
         return normalizedDocTF_IDF;
     }
 
+    public static Map<String, Map<Integer, Number>> productQueryMatchedDocs (Map<String, Map<Integer, Number>> normalizedDocTF_IDF , Map<String, Number> normalizedQueryTF_IDF){
+        Map<String, Map<Integer, Number>> product = new TreeMap<>();
+
+        for(String term : normalizedDocTF_IDF.keySet()){
+            Map<Integer, Number> termDocs = new HashMap<>();
+
+            for(Integer docID : normalizedDocTF_IDF.get(term).keySet()){
+                double productValue = normalizedDocTF_IDF.get(term).get(docID).doubleValue() * normalizedQueryTF_IDF.get(term).doubleValue();
+                double roundedValue = Math.round(productValue * 100000.0) / 100000.0;
+
+                if (roundedValue == Math.floor(roundedValue)) {
+                    termDocs.put(docID, (int) roundedValue);
+                } else {
+                    termDocs.put(docID, roundedValue);
+                }
+            }
+
+            product.put(term ,termDocs);
+        }
+
+        return product;
+    }
 
 
 }

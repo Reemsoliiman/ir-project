@@ -137,6 +137,9 @@ public class Main {
                     Map<String, Map<Integer, Number>> normalizedDocTF_IDF = QueryOutputs.computeNormalizedDocTF_IDF(normalizedTFIDF , parsedQuery ,queryResult);
                     printTable("Doc Normalized TF * IDF" , normalizedDocTF_IDF);
 
+                    Map<String, Map<Integer, Number>> productQueryMatchedDocs =QueryOutputs.productQueryMatchedDocs(normalizedDocTF_IDF , normalizedQueryTF_IDF);
+                    printTable("product (Query * MatchedDocs) " , productQueryMatchedDocs);
+
                 } else if (choice == 2) {
                     System.out.println("Exiting...");
                 } else {
