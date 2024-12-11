@@ -104,4 +104,30 @@ public class QueryOutputs {
 
         return normalizedQueryTF_IDF;
     }
+
+    public static Map<String, Map<Integer, Number>> computeNormalizedDocTF_IDF(Map<String, Map<Integer, Number>> TF_IdfMap, List<String> query, List<Integer> matchedDocs) {
+        Map<String, Map<Integer, Number>> normalizedDocTF_IDF = new TreeMap<>();
+        List<String> finalQuery = removeKeyWords(query);
+
+        for (String term : finalQuery) {
+            Map<Integer, Number> docTF_IDF = new TreeMap<>();
+
+            if (TF_IdfMap.containsKey(term)) {
+                for (Integer docId : matchedDocs) {
+                    if (TF_IdfMap.get(term).containsKey(docId)) {
+                        double tfidf = TF_IdfMap.get(term).get(docId).doubleValue();
+
+                        docTF_IDF.put(docId, tfidf);
+                    }
+                }
+
+                normalizedDocTF_IDF.put(term, docTF_IDF);
+            }
+        }
+
+        return normalizedDocTF_IDF;
+    }
+
+
+
 }

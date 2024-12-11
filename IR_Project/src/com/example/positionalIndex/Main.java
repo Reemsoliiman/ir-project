@@ -48,7 +48,7 @@ public class Main {
 //      -----------------------------------------Query----------------------------------------------
         int choice = 0;
         do{
-            System.out.println("-------Query Menu--------");
+            System.out.println("-------------------------Query Menu--------------------------");
             System.out.println("1- Write Query");
             System.out.println("2- Exit");
             System.out.print("Enter your choice: ");
@@ -134,6 +134,8 @@ public class Main {
                     Map<String, Number> normalizedQueryTF_IDF = QueryOutputs.computeNormalizedQueryTF_IDF(queryTF_IDF);
                     printTable("Query Normalized TF * IDF" , normalizedQueryTF_IDF);
 
+                    Map<String, Map<Integer, Number>> normalizedDocTF_IDF = QueryOutputs.computeNormalizedDocTF_IDF(normalizedTFIDF , parsedQuery ,queryResult);
+                    printTable("Doc Normalized TF * IDF" , normalizedDocTF_IDF);
 
                 } else if (choice == 2) {
                     System.out.println("Exiting...");
