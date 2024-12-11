@@ -105,4 +105,5 @@ public class QueryOutputs {
         return normalizedQueryTF_IDF;
     }
 
+
 }
