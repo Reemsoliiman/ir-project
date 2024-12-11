@@ -59,4 +59,5 @@ public class QueryProcessor {
 
         return result;
     }
+
 }
