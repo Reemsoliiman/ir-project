@@ -78,8 +78,16 @@ public class QueryOutputs {
                 queryTF_IDF.put(term, roundedValue);
             }
         }
-
         return queryTF_IDF;
+    }
+    public static double computeQueryLength(Map<String, Number> queryTF_IDF) {
+        double sum = 0.0;
+        for (Map.Entry<String, Number> entry : queryTF_IDF.entrySet()) {
+            double weight = entry.getValue().doubleValue();
+            sum += weight * weight;
+        }
+        double length = Math.sqrt(sum);
+        return Math.round(length * 100000.0) / 100000.0;
     }
 
 }

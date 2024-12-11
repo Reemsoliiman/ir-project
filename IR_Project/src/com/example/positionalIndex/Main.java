@@ -63,6 +63,10 @@ public class Main {
         Map<String, Number> queryTF_IDF = QueryOutputs.computeQueryTF_IDF(queryWeightTF, queryIDF);
         System.out.println("Query TF * IDF: " + queryTF_IDF);
 
+        double queryLength = QueryOutputs.computeQueryLength(queryTF_IDF);
+        System.out.println("Query Length: " + queryLength);
+
+
     }
 
 
