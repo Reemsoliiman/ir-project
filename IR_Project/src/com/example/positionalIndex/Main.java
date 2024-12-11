@@ -45,35 +45,10 @@ public class Main {
         Map<String, Map<Integer, Number>> normalizedTFIDF = TF_IDF.normalizeTFIDF(TFIDF, docLengths);
         printTable("Normalized TF-IDF", normalizedTFIDF);
 
-//---------------------------------------------testing--------------------------------------------------------------------//
-//        String queryInput = "fools fear in AND NOT rush to tread where";
-//
-//        List<String> parsedQuery = QueryProcessor.queryParser(queryInput);
-//        System.out.println("Parsed Query: " + parsedQuery);
-//
-//        List<String> resultQuery = QueryOutputs.removeKeyWords(parsedQuery);
-//        System.out.println("Query: " + resultQuery);
-//
-//        Map<String, Integer> queryTF = QueryOutputs.computeQueryTF(resultQuery);
-//        System.out.println("QueryTF: " + queryTF);
-//
-//        Map<String, Number> queryWeightTF = QueryOutputs.computeQueryWeightTF(queryTF);
-//        System.out.println("QueryWeightTF: " + queryWeightTF);
-//
-//        Map<String, Number> queryIDF = QueryOutputs.retrieveQueryIDF(resultQuery, IDF);
-//        System.out.println("Query IDF: " + queryIDF);
-//        Map<String, Number> queryTF_IDF = QueryOutputs.computeQueryTF_IDF(queryWeightTF, queryIDF);
-//        System.out.println("Query TF * IDF: " + queryTF_IDF);
-//
-//        double queryLength = QueryOutputs.computeQueryLength(queryTF_IDF);
-//        System.out.println("Query Length: " + queryLength);
-//
-//        Map<String, Number> normalizedQueryTF_IDF = QueryOutputs.computeNormalizedQueryTF_IDF(queryTF_IDF);
-//        System.out.println("Query Normalized TF * IDF: " + normalizedQueryTF_IDF);
-
-//        ==========================================================================================
+//      -----------------------------------------Query----------------------------------------------
         int choice = 0;
         do{
+            System.out.println("-------Query Menu--------");
             System.out.println("1- Write Query");
             System.out.println("2- Exit");
             System.out.print("Enter your choice: ");
