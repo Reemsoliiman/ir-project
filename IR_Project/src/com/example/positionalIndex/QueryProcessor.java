@@ -1,7 +1,6 @@
 package com.example.positionalIndex;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class QueryProcessor {
     public static List<String> queryParser(String query) {
@@ -24,7 +23,7 @@ public class QueryProcessor {
                             result.add(currentSegment.toString().trim());
                             currentSegment.setLength(0);
                         }
-                        result.add(twoWordOperator);
+                        result.add(twoWordOperator.toUpperCase());
                         i++;
                         break;
                     }
@@ -39,7 +38,7 @@ public class QueryProcessor {
                             result.add(currentSegment.toString().trim());
                             currentSegment.setLength(0);
                         }
-                        result.add(words[i]);
+                        result.add(words[i].toUpperCase());
                         break;
                     }
                 }
@@ -60,4 +59,110 @@ public class QueryProcessor {
         return result;
     }
 
+    public static Map<String, List<Integer>> getQueryPositionalIndex(Map<String, Map<Integer, List<Integer>>> positionalIndex, List<String> query) {
+        Map<String, List<Integer>> queryPositionalIndex = new TreeMap<>();
+        String index = query.get(0).trim();
+        if (index.contains(" ")) {
+            String[] terms = index.split(" ");
+            Map<Integer, List<Integer>> firstTermDocs = positionalIndex.get(terms[0]);
+            if (firstTermDocs != null) {
+                List<Integer> validDocs = new ArrayList<>();
+
+                for (Map.Entry<Integer, List<Integer>> firstTermDoc : firstTermDocs.entrySet()) {
+                    int docID = firstTermDoc.getKey();
+                    List<Integer> firstTermPositions = firstTermDoc.getValue();
+
+                    boolean validPhrase = true;
+                    List<Integer> currentPositions = new ArrayList<>(firstTermPositions);
+
+                    for (int i = 1; i < terms.length; i++) {
+                        Map<Integer, List<Integer>> termDocs = positionalIndex.get(terms[i]);
+
+                        if (termDocs != null && termDocs.containsKey(docID)) {
+                            List<Integer> termPositions = termDocs.get(docID);
+
+                            List<Integer> adjustedPositions = new ArrayList<>();
+                            for (Integer position : currentPositions) {
+                                for (Integer termPosition : termPositions) {
+                                    if (termPosition == position + 1) {
+                                        adjustedPositions.add(termPosition);
+                                    }
+                                }
+                            }
+                            if (adjustedPositions.isEmpty()) {
+                                validPhrase = false;
+                                break;
+                            }
+                            currentPositions = adjustedPositions;
+                        } else {
+                            validPhrase = false;
+                            break;
+                        }
+                    }
+                    if (validPhrase) {
+                        validDocs.add(docID);
+                    }
+                }
+                if (!validDocs.isEmpty()) {
+                    queryPositionalIndex.put(index, validDocs);
+                }
+            }
+        } else {
+            Map<Integer, List<Integer>> termDocs = positionalIndex.get(index);
+            if (termDocs != null) {
+                queryPositionalIndex.put(index, new ArrayList<>(termDocs.keySet()));
+            }
+        }
+
+        return queryPositionalIndex;
+    }
+    public static List<Integer> logicalOperatorResult(Map<String, List<Integer>> queryPositionalIndex, List<String> query) {
+        Set<Integer> resultSet = new HashSet<>();
+
+        List<Integer> query1Docs = queryPositionalIndex.get(query.get(0));
+        List<Integer> query2Docs = queryPositionalIndex.get(query.get(2));
+
+        if (query.contains("AND NOT")) {
+            if (query1Docs != null) {
+                resultSet.addAll(query1Docs);
+                if (query2Docs != null) {
+                    resultSet.removeAll(query2Docs);
+                }
+            }
+        } else if (query.contains("OR NOT")) {
+            if (query1Docs != null) {
+                resultSet.addAll(query1Docs);
+            }
+            if (query2Docs != null) {
+                Set<Integer> allDocs = getAllDocumentIDs(queryPositionalIndex);
+                allDocs.removeAll(query2Docs);
+                resultSet.addAll(allDocs);
+            }
+        } else if (query.contains("AND")) {
+            if (query1Docs != null && query2Docs != null) {
+                for (int doc : query2Docs) {
+                    if (query1Docs.contains(doc)) {
+                        resultSet.add(doc);
+                    }
+                }
+            }
+        } else if (query.contains("OR")) {
+            if (query1Docs != null) {
+                resultSet.addAll(query1Docs);
+            }
+            if (query2Docs != null) {
+                resultSet.addAll(query2Docs);
+            }
+        }
+
+        return new ArrayList<>(resultSet);
+    }
+
+    private static Set<Integer> getAllDocumentIDs(Map<String, List<Integer>> queryPositionalIndex) {
+        Set<Integer> allDocs = new HashSet<>();
+        for (List<Integer> docs : queryPositionalIndex.values()) {
+            allDocs.addAll(docs);
+        }
+        return allDocs;
+    }
 }
