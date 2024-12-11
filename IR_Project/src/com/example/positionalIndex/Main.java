@@ -78,19 +78,19 @@ public class Main {
 //        List<Integer> result = QueryProcessor.logicalOperatorResult(queryPositionalIndex , query);
 //        System.out.println("logicalOperatorResult ==> " + result);
     }
-
-
-    // Enhanced table printer
-    private static <K, V> void printTable(String title, Map<K, V> data) {
-        System.out.println("\n" + "═".repeat(50));
-        System.out.println(" " + title + " ");
-        System.out.println("═".repeat(50));
-        System.out.printf("%-20s | %-50s\n", "Key", "Value");
-        System.out.println("─".repeat(80));
-
-        for (Map.Entry<K, V> entry : data.entrySet()) {
-            System.out.printf("%-20s | %-50s\n", entry.getKey(), entry.getValue());
-        }
-        System.out.println("═".repeat(80));
-    }
+//
+//
+//    // Enhanced table printer
+//    private static <K, V> void printTable(String title, Map<K, V> data) {
+//        System.out.println("\n" + "═".repeat(50));
+//        System.out.println(" " + title + " ");
+//        System.out.println("═".repeat(50));
+//        System.out.printf("%-20s | %-50s\n", "Key", "Value");
+//        System.out.println("─".repeat(80));
+//
+//        for (Map.Entry<K, V> entry : data.entrySet()) {
+//            System.out.printf("%-20s | %-50s\n", entry.getKey(), entry.getValue());
+//        }
+//        System.out.println("═".repeat(80));
+//    }
 }
