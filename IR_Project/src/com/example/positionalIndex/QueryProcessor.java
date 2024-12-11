@@ -38,9 +38,10 @@ public class QueryProcessor {
         return result;
     }
 
-    public static Map<String, List<Integer>> getQueryPositionalIndex(Map<String, Map<Integer, List<Integer>>> positionalIndex, List<String> query) {
+    public static Map<String, List<Integer>> getQueryPositionalIndex(Map<String, Map<Integer, List<Integer>>> positionalIndex, String query) {
+
         Map<String, List<Integer>> queryPositionalIndex = new TreeMap<>();
-        String index = query.get(0).trim();
+        String index = query.trim();
         if (index.contains(" ")) {
             String[] terms = index.split(" ");
             Map<Integer, List<Integer>> firstTermDocs = positionalIndex.get(terms[0]);
@@ -137,7 +138,7 @@ public class QueryProcessor {
         return new ArrayList<>(resultSet);
     }
 
-    public static List<Integer> handleORNOT(Map<String, Map<Integer, List<Integer>>> positionalIndexParser, List<Integer> queryPositionalIndex) {
+    private static List<Integer> handleORNOT(Map<String, Map<Integer, List<Integer>>> positionalIndexParser, List<Integer> queryPositionalIndex) {
         Set<Integer> allDocs = new HashSet<>();
         for (Map<Integer, List<Integer>> docs : positionalIndexParser.values()) {
             allDocs.addAll(docs.keySet());
@@ -145,5 +146,36 @@ public class QueryProcessor {
 
         allDocs.removeAll(queryPositionalIndex);
         return new ArrayList<>(allDocs);
+    }
+
+
+    public static List<Integer> showQueryResult(List<String> queryPraser) throws IOException{
+
+        List<Integer> result = new ArrayList<>();
+        String filePath = "mapReduceOutput.txt";
+        Map<String, Map<Integer, List<Integer>>> allDocs = positionalIndexParser.parseFile(filePath);
+
+        Map<String, List<Integer>> queryPositionalIndex = new HashMap<>();
+        Map<String, List<Integer>> query1 = getQueryPositionalIndex(allDocs , queryPraser.get(0));
+        Map<String, List<Integer>> query2 = getQueryPositionalIndex(allDocs , queryPraser.get(2));
+        queryPositionalIndex.putAll(query1);
+        queryPositionalIndex.putAll(query2);
+
+        result = logicalOperatorResult(queryPositionalIndex , queryPraser.subList(0, 3));
+
+        if(queryPraser.size() > 3){
+            for(int i = 3 ; i < queryPraser.size() ; i += 2){
+
+                queryPositionalIndex.put("result" , result);
+                Map<String, List<Integer>> queryPart2 = getQueryPositionalIndex(allDocs , queryPraser.get(i + 1));
+                queryPositionalIndex.putAll(queryPart2);
+                List<String> query = new ArrayList<>();
+                query.add("result");
+                query.addAll(queryPraser.subList(i, i + 2));
+
+                result = logicalOperatorResult(queryPositionalIndex , query);
+            }
+        }
+        return  result;
     }
 }

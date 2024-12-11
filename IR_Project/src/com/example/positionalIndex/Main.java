@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -56,10 +55,9 @@ public class Main {
 //        System.out.println("Resulting Documents: " + result);
 //-----------------------------------------------------------------------------------------------------------------//
 //      ===================da run OR NOT ==========================================================
-        List<String> query1 = new ArrayList<>();
-        query1.add("to tread");
-        List<String> query2 = new ArrayList<>();
-        query2.add("fear");
+        String query1 = "to tread";
+
+        String query2 = "fear";
 
         Map<String, List<Integer>> queryPositionalIndex1 = QueryProcessor.getQueryPositionalIndex(outPut , query1);
         System.out.println("queryPositionalIndex1 =>" + queryPositionalIndex1);
@@ -67,18 +65,25 @@ public class Main {
         Map<String, List<Integer>> queryPositionalIndex2 = QueryProcessor.getQueryPositionalIndex(outPut , query2);
         System.out.println("queryPositionalIndex2 =>" + queryPositionalIndex2);
 
-        Map<String, List<Integer>> queryPositionalIndex = new TreeMap<>();
-        queryPositionalIndex.putAll(queryPositionalIndex1);
-        queryPositionalIndex.putAll(queryPositionalIndex2);
+        Map<String, List<Integer>> queryPositionalIndex3 = QueryProcessor.getQueryPositionalIndex(outPut , "where");
+        System.out.println("queryPositionalIndex3 =>" + queryPositionalIndex3);
+//
+//        Map<String, List<Integer>> queryPositionalIndex = new TreeMap<>();
+//        queryPositionalIndex.putAll(queryPositionalIndex1);
+//        queryPositionalIndex.putAll(queryPositionalIndex2);
 
         List<String> query = new ArrayList<>();
-        query.addAll(query1);
+        query.add(query1);
+        query.add("AND");
+        query.add(query2);
         query.add("OR NOT");
-        query.addAll(query2);
+        query.add("where");
 
-        List<Integer> result = QueryProcessor.logicalOperatorResult(queryPositionalIndex , query);
+//        List<Integer> result = QueryProcessor.logicalOperatorResult(queryPositionalIndex , query);
 //        List<Integer> result = QueryProcessor.handleORNOT(outPut , queryPositionalIndex2);
-        System.out.println("logicalOperatorResult ==> " + result);
+
+        List<Integer> result = QueryProcessor.showQueryResult(query);
+        System.out.println("logicalOperatorResult => " + result);
 //        =================================================================================================
     }
 //
