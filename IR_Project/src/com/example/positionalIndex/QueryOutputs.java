@@ -18,9 +18,22 @@ public class QueryOutputs {
         return queryResult;
     }
 
+    private static List<String> handleAfterANDNOT (List<String> queryResult){
+        List<String> result = new ArrayList<>();
+        for(String term : queryResult){
+            if(term.equals("AND NOT")){
+                break;
+            }else{
+                result.add(term);
+            }
+        }
+        return result;
+    }
+
     public static Map<String, Integer> computeQueryTF (List<String> query){
         Map<String, Integer> queryTF = new TreeMap<>();
-        List<String> resultQuery = removeKeyWords(query);
+        List<String> result = QueryOutputs.handleAfterANDNOT(query);
+        List<String> resultQuery = removeKeyWords(result);
 
          for(String term : resultQuery){
              int count = 0;
@@ -54,7 +67,8 @@ public class QueryOutputs {
 
     public static Map<String, Number> retrieveQueryIDF(List<String> query, Map<String, Number> idfMap) {
         Map<String, Number> queryIDF = new TreeMap<>();
-        List<String> resultQuery = removeKeyWords(query);
+        List<String> result = QueryOutputs.handleAfterANDNOT(query);
+        List<String> resultQuery = removeKeyWords(result);
 
         for (String term : resultQuery) {
             if (idfMap.containsKey(term)) {
@@ -110,7 +124,8 @@ public class QueryOutputs {
 
     public static Map<String, Map<Integer, Number>> computeNormalizedDocTF_IDF(Map<String, Map<Integer, Number>> TF_IdfMap, List<String> query, List<Integer> matchedDocs) {
         Map<String, Map<Integer, Number>> normalizedDocTF_IDF = new TreeMap<>();
-        List<String> finalQuery = removeKeyWords(query);
+        List<String> result = QueryOutputs.handleAfterANDNOT(query);
+        List<String> finalQuery = removeKeyWords(result);
 
         for (String term : finalQuery) {
             Map<Integer, Number> docTF_IDF = new TreeMap<>();

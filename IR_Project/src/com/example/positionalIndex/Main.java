@@ -57,41 +57,18 @@ public class Main {
                 input.nextLine();
 
                 if (choice == 1) {
-                    StringBuilder query = new StringBuilder();
 
                     System.out.print("Enter query: ");
-                    String query1 = input.nextLine();
-                    query.append(query1).append(" ");
+                    String query = input.nextLine();
 
-                    while (true) {
-                        System.out.print("Do you want to add operator and query? (y/n): ");
-                        String continueChoice = input.nextLine();
-
-                        if (continueChoice.equalsIgnoreCase("n")) {
-                            break;
-                        } else if (continueChoice.equalsIgnoreCase("y")) {
-                            System.out.print("Enter operator: ");
-                            String op = input.nextLine();
-                            query.append(" ").append(op);
-
-                            System.out.print("Enter query: ");
-                            String query2 = input.nextLine();
-                            query.append(" ").append(query2);
-                        } else {
-                            System.out.println("Invalid choice. Please type 'y' or 'n'.");
-                        }
-                    }
-
-                    String finalQuery = query.toString();
-
-                    List<String> parsedQuery = QueryProcessor.queryParser(finalQuery);
+                    List<String> parsedQuery = QueryProcessor.queryParser(query);
                     System.out.println("Query => " + parsedQuery);
                     List<Integer> queryResult = new ArrayList<>();
 
                     if(parsedQuery.size() > 1){
                         queryResult = QueryProcessor.showQueryResult(parsedQuery);
                     }else{
-                        Map<String, List<Integer>> queryPositionalIndex = QueryProcessor.getQueryPositionalIndex(outPut , finalQuery);
+                        Map<String, List<Integer>> queryPositionalIndex = QueryProcessor.getQueryPositionalIndex(outPut , query);
 
                         for (List<Integer> list : queryPositionalIndex.values()) {
                             queryResult.addAll(list);
